@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" type="image/png" href="location.png" />
+<title>Top-25: history of relations</title>
+<style type="text/css">
+#svg {
+	position: fixed;
+	left: 100px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}			
+svg text {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+svg text::selection {
+    background: none;
+}
+circle {
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div id="svg"></div>
+<div id="knops" style="width:30px;"></div>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="labeledgraph.js?1"></script>
+
+</body>
+</html>
