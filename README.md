@@ -11,5 +11,4 @@ There are 3 pages presenting the data:
 
 As well the datasets that were retrieved from the models are available in `data` directory of this repository.
 
-
-
+<div>Icons used in the pages are made by <a href="https://www.flaticon.com/authors/iconixar" title="iconixar">iconixar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
