@@ -62,7 +62,7 @@ function loadSlice(key){
 				name:x,
 				img: lookup[x]
 				}});
-			console.log(mapped);
+			// console.log(mapped);
 			// console.log(newedges);
 			
 
@@ -137,11 +137,9 @@ function loadSlice(key){
 			 // .attr("r", 20)
 			 // .attr("stroke", "gray")
 			 // .attr("fill", "none");
-		
+		// console.log(d, d.img+"?width=32");
 		var nodeims  = nodes.append("svg:image")
-		 .attr("xlink:href", function(d){
-			 console.log(d, d.img+"?width=32");
-			 return d.img})
+		 .attr("xlink:href", function(d){ return d.img})
       .attr("x", -8)
       .attr("y", -8)
       .attr("width", 32)
@@ -229,20 +227,20 @@ function loadSlice(key){
 												   //console.log(d)
 												   return path});       
 
-				edgelabels.attr('transform',function(d,i){
-					if (d.target.x<d.source.x){
-						bbox = this.getBBox();
-						rx = bbox.x+bbox.width/2;
-						ry = bbox.y+bbox.height/2;
-						return 'rotate(180 '+rx+' '+ry+')';
-						}
-					else {
-						return 'rotate(0)';
-						}
-				});
+				// edgelabels.attr('transform',function(d,i){
+					// if (d.target.x<d.source.x){
+						// bbox = this.getBBox();
+						// rx = bbox.x+bbox.width/2;
+						// ry = bbox.y+bbox.height/2;
+						// return 'rotate(180 '+rx+' '+ry+')';
+						// }
+					// else {
+						// return 'rotate(0)';
+						// }
+				// });
 			});
 }	
-	d3.json("big.json", function(error, data) {
+	d3.json("all_cos.json", function(error, data) {
 			// console.log(data); // this is your data
 			var knops  = [1,2,3,4,5,6,7,8];
 			var ages  = ["1801–1848", "1849–1896","1897–1916", "1917–1929", "1930–1954", "1955–1990", "1991–2000", "2001–2017"];
