@@ -1,28 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-      <!-- Leaflet 0.5: https://github.com/CloudMade/Leaflet-->
-		<link rel="stylesheet" href="lib/leaflet.css" />
-		<!--[if lte IE 8]> <link rel="stylesheet" href="../../lib/leaflet.ie.css" />  <![endif]-->  
-		<script src="lib/leaflet.js"></script>
-
-		<!-- MarkerCluster https://github.com/danzel/Leaflet.markercluster -->
-		<link rel="stylesheet" href="lib/MarkerCluster.css" />
-		<link rel="stylesheet" href="lib/MarkerCluster.Default.css" />
-		<!--[if lte IE 8]> <link rel="stylesheet" href="../../lib/MarkerCluster.Default.ie.css" /> <![endif]-->
-		<script src="lib/leaflet.markercluster-src.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" integrity="sha512-RLEjtaFGdC4iQMJDbMzim/dOvAu+8Qp9sw7QE4wIMYcg2goVoivzwgSZq9CsIxp4xKAZPKh5J2f2lOko2Ze6FQ==" crossorigin="anonymous" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" integrity="sha512-BBToHPBStgMiw0lD4AtkRIZmdndhB6aQbXpX7omcrXeG2PauGBl2lzq2xUZTxaLxYz5IDHlmneCZ1IJ+P3kYtQ==" crossorigin="anonymous" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js" integrity="sha512-MQlyPV+ol2lp4KodaU/Xmrn+txc1TP15pOBF/2Sfre7MRsA/pB4Vy58bEqe9u7a7DczMLtU5wT8n7OblJepKbg==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+		<script src="leaflet.geocsv.js"></script>
 		<title>Ментальная география</title>
-		<link rel="icon" type="image/png" href="half-life.png" />
-
-		<!-- GeoCSV: https://github.com/joker-x/Leaflet.geoCSV -->
-		<script src="leaflet.geocsv-src.js"></script>
-
-		<!-- jQuery 1.8.3: http://jquery.com/ -->
-		<script src="lib/jquery.js"></script>
+		<link rel="icon" type="image/png" href="icons/route.png" />
 
 		<style>	
 		html, body, #mapa {
@@ -41,7 +31,7 @@
 			z-index: 2;
 		}
 
-		#cargando {
+		#loader {
 			position:fixed;
 			top:0;
 			left:0;
@@ -89,68 +79,57 @@
 	</head>
 	<body>
 		<div id="mapa"></div>
-		<div id="cargando">Загрузка...</div>
+		<div id="loader">Загрузка...</div>
+		<script>
 
-		<!-- <div id="botonera"> -->
-			<!-- <button id="localizame" class="boton">Города</button> -->
-		<!-- </div> -->
+		var mapa = L.map('mapa', {attributionControl:false}).setView([53, 27], 5);
 
-<script>
+		L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 18
+		}).addTo(mapa);
 
-//;$(function() {
-
-var mapa = L.map('mapa', {attributionControl:false}).setView([53, 27], 5);
-
-L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 18
-}).addTo(mapa);
-
-var bankias = L.geoCsv(null, {
-	onEachFeature: function (feature, layer) {
-		var popup = '';
-		console.log(feature);
-		for (var clave in feature.properties) {
-			var title = bankias.getPropertyTitle(clave);
-			popup += '<b>'+title+'</b><br />'+feature.properties[clave]+'<br /><br />';
-		}
-		layer.bindPopup(popup);
-	},
-	pointToLayer: function (feature, latlng) {
-		return L.marker(latlng, {
-			icon:L.icon({
-				iconUrl: 'example/icons/red.png',
-				shadowUrl: 'marker-shadow.png',
-				iconSize: [25,41],
-				shadowSize:   [41, 41],
-				shadowAnchor: [13, 20]
-			})
+		var bankias = L.geoCsv(null, {
+			onEachFeature: function (feature, layer) {
+				var popup = '';
+				// console.log(feature);
+				for (var clave in feature.properties) {
+					var title = bankias.getPropertyTitle(clave);
+					popup += '<b>'+title+'</b><br />'+feature.properties[clave]+'<br /><br />';
+				}
+				layer.bindPopup(popup);
+			},
+			pointToLayer: function (feature, latlng) {
+				return L.marker(latlng, {
+					icon:L.icon({
+						iconUrl: 'icons/red.png',
+						shadowUrl: 'icons/marker-shadow.png',
+						iconSize: [25,41],
+						shadowSize:   [41, 41],
+						shadowAnchor: [13, 20]
+					})
+				});
+			},
+			firstLineTitles: true
 		});
-	},
-	firstLineTitles: true
-});
 
-$.ajax ({
-	type:'GET',
-	dataType:'text',
-	url:'nei_with_latlong2.csv',
-   error: function() {
-   console.log("eerrorr!");
-   },
-	success: function(csv) {
-      var cluster = new L.MarkerClusterGroup();
-		bankias.addData(csv);
-		cluster.addLayer(bankias);
-		mapa.addLayer(cluster);
-		//mapa.fitBounds(cluster.getBounds());
-	},
-   complete: function() {
-      $('#cargando').delay(500).fadeOut('slow');
-   }
-});
-
-
-//});
-</script>
-
+		$.ajax ({
+			type:'GET',
+			dataType:'text',
+			url:'../data/nei_with_latlong2.csv',
+		   error: function() {
+		   console.log("error!");
+		   },
+			success: function(csv) {
+			  var cluster = new L.MarkerClusterGroup();
+				bankias.addData(csv);
+				cluster.addLayer(bankias);
+				mapa.addLayer(cluster);
+				//mapa.fitBounds(cluster.getBounds());
+			},
+		   complete: function() {
+			  $('#loader').delay(500).fadeOut('slow');
+		   }
+		});
+		</script>
 	</body>
 </html>
